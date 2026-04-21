@@ -906,9 +906,10 @@ function nineRBadge(action) {
   };
   const r = map[action];
   if (!r) return '<span class="text-[11px] t-faint">No R strategy — already operating efficiently</span>';
-  return `<div class="flex items-center gap-2 surface-2 px-2.5 py-1.5 rounded" style="border:1px solid #16a34a44">
-    <span class="font-700 text-[13px]" style="color:#16a34a">${r.code}</span>
-    <span class="text-[12px] font-600" style="color:#16a34a">${r.name}</span>
+  const tone = actionTone(action);
+  return `<div class="flex items-center gap-2 surface-2 px-2.5 py-1.5 rounded" style="border:1px solid ${tone.border}">
+    <span class="font-700 text-[13px]" style="color:${tone.color}">${r.code}</span>
+    <span class="text-[12px] font-600" style="color:${tone.color}">${r.name}</span>
     <span class="text-[11px] t-muted">— ${r.desc}</span>
   </div>`;
 }
