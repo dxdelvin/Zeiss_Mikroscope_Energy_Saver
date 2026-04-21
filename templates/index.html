@@ -233,6 +233,21 @@
   .act-warn  { background: rgba(245,158,11,.12); color: var(--warn);  border-color: rgba(245,158,11,.28); }
   .act-ok    { background: rgba(16,185,129,.12); color: var(--ok);    border-color: rgba(16,185,129,.28); }
 
+  /* Compact, highlighted recommendation block */
+  .rec-highlight {
+    border: 1px solid rgba(0,180,240,.36);
+    background:
+      linear-gradient(180deg, rgba(0,180,240,.12), rgba(0,180,240,.03)),
+      var(--surface);
+    box-shadow: inset 0 0 0 1px rgba(0,180,240,.08), 0 8px 20px -14px rgba(0,180,240,.45);
+  }
+  .rec-emphasis {
+    border: 1px solid rgba(0,180,240,.24);
+    background: rgba(0,180,240,.08);
+    border-radius: 8px;
+    padding: 7px 9px;
+  }
+
   /* ── Phase divider ─────────────────────────────────────────────────── */
   .phase-divider {
     display: flex; align-items: center; gap: 10px;
@@ -336,6 +351,63 @@
   }
   .chip .count { font-size: 10px; opacity: .7; }
 
+  /* Sticky toolbar: selected segment capsule */
+  .toolbar-segment {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    min-width: 370px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background:
+      linear-gradient(180deg, rgba(0,180,240,.10), rgba(0,180,240,.03)),
+      var(--surface);
+    box-shadow: inset 0 0 0 1px rgba(0,180,240,.08);
+  }
+  .toolbar-seg-value {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1;
+    width: 3ch;
+    text-align: right;
+  }
+  .toolbar-segment #rp-phase-badge {
+    display: inline-block;
+    width: 112px;
+  }
+  .toolbar-segment #rp-phase-badge .pill {
+    width: 100%;
+    justify-content: center;
+    white-space: nowrap;
+  }
+  .toolbar-segment #rp-position {
+    display: inline-block;
+    width: 9ch;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .toolbar-nav-btn {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 999px;
+  }
+  .toolbar-segment #rp-phase-badge .pill {
+    padding: 2px 7px;
+    font-size: 10px;
+  }
+
+  @media (max-width: 1200px) {
+    #sticky-toolbar { padding-left: 14px; padding-right: 14px; gap: 8px; }
+    .toolbar-segment { min-width: auto; }
+    .toolbar-segment #rp-phase-badge { width: 92px; }
+    .toolbar-segment #rp-position { display: none; }
+    #toolbar-chips { max-width: 42vw; overflow: hidden; }
+  }
+
   /* Demo scenario card */
   .scenario-card {
     text-align: left; padding: 14px; border-radius: 10px;
@@ -397,15 +469,25 @@
     <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><rect x="1" y="1" width="3" height="8"/><rect x="6" y="1" width="3" height="8"/></svg>
     Stop
   </button>
+  <div class="toolbar-segment" aria-label="Selected segment controls">
+    <span class="t-faint text-[10px] uppercase tracking-[.1em]">Selected</span>
+    <span id="rp-seg-id" class="toolbar-seg-value t-mono">—</span>
+    <span id="rp-phase-badge"></span>
+    <button id="prev-seg" class="btn btn-ghost btn-sm toolbar-nav-btn" title="Previous (↑)"
+      aria-label="Previous segment">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button id="next-seg" class="btn btn-ghost btn-sm toolbar-nav-btn" title="Next (↓)"
+      aria-label="Next segment">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <span id="rp-position" class="t-faint text-[10.5px] t-mono">—</span>
+  </div>
   <div class="h-5 w-px divider"></div>
-  <div id="toolbar-chips" class="flex items-center gap-1.5 flex-wrap" role="group" aria-label="Filter segments"></div>
+  <div id="toolbar-chips" class="flex flex-1 min-w-0 items-center gap-1.5 flex-wrap" role="group" aria-label="Filter segments"></div>
   <div class="ml-auto flex items-center gap-2">
     <span id="sb-scenario" class="t-faint text-xs t-mono"></span>
     <div class="h-5 w-px divider"></div>
-    <button id="copy-report-btn" class="btn btn-ghost btn-sm" title="Copy summary to clipboard">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      Copy summary
-    </button>
     <button id="download-btn" class="btn btn-ghost btn-sm" title="Download JSON">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       JSON
@@ -519,7 +601,6 @@
         <div>
           <div class="t-label mb-1">Model F1</div>
           <div class="text-[20px] font-700 t-mono" id="kpi-f1">—</div>
-          <div class="t-faint text-[10.5px]" id="kpi-f1-sub">—</div>
         </div>
       </div>
     </div>
@@ -547,37 +628,41 @@
 
     <!-- RIGHT: inspector -->
     <aside class="w-full xl:w-[340px] shrink-0 inspector scroll-y space-y-3">
-      <!-- Header -->
-      <div class="surface p-4">
-        <div class="flex items-center justify-between gap-2">
-          <div>
-            <div class="t-label mb-0.5">Selected</div>
-            <div id="rp-seg-id" class="text-[14.5px] font-700 t-mono">—</div>
-          </div>
-          <span id="rp-phase-badge"></span>
-        </div>
-        <div class="flex items-center gap-2 mt-3">
-          <button id="prev-seg" class="btn btn-sm btn-ghost" title="Previous (↑)"
-            aria-label="Previous segment">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <button id="next-seg" class="btn btn-sm btn-ghost" title="Next (↓)"
-            aria-label="Next segment">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-          <span id="rp-position" class="t-faint text-[11px] ml-auto t-mono">—</span>
-        </div>
-      </div>
-
       <!-- Tabs -->
       <div class="surface p-1 flex gap-1" role="tablist">
         <div class="tab flex-1 text-center" role="tab" data-tab="metrics" aria-selected="true">Metrics</div>
-        <div class="tab flex-1 text-center" role="tab" data-tab="why">Why</div>
         <div class="tab flex-1 text-center" role="tab" data-tab="impact">Impact</div>
       </div>
 
       <!-- Tab: Metrics -->
       <div class="tab-pane" data-pane="metrics">
+        <div class="surface p-3 mb-3 rec-highlight">
+          <div class="flex items-center justify-between mb-2">
+            <div class="t-label">9R Strategy</div>
+            <span id="rp-action-badge"></span>
+          </div>
+          <div id="rp-9r-badge" class="mb-2"></div>
+          <div id="rp-reason-card" class="surface-2 p-2.5 mb-2">
+            <div id="rp-reason-label" class="t-label mb-1">Recommendation</div>
+            <p id="rp-reason" class="text-[12px] leading-snug">—</p>
+          </div>
+          <div id="rp-issue-card" class="surface-2 p-2.5 hidden mb-2">
+            <div class="t-label mb-1" style="color:var(--spike)">Issue detected</div>
+            <p id="rp-issue-text" class="text-[12px] leading-snug"></p>
+          </div>
+          <div id="rp-ok-card" class="surface-2 p-2.5 hidden mb-2">
+            <div class="flex items-center gap-2">
+              <span style="color:var(--ok)">✓</span>
+              <span class="text-[12px] font-500">No issues detected.</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <span class="t-label">Confidence</span>
+            <span class="t-faint text-[10px]" id="rp-rule">—</span>
+          </div>
+          <div class="meter mt-1"><div id="rp-conf-bar" style="width:0%;background:var(--zeiss)"></div></div>
+          <div class="t-faint text-[10px] mt-1" id="rp-confidence-text">—</div>
+        </div>
         <div class="surface p-4">
           <div class="grid grid-cols-2 gap-x-4 gap-y-3">
             <div><div class="t-label">Avg power</div><div class="t-mono text-[14px] font-600" id="rp-power">—</div></div>
@@ -588,33 +673,6 @@
             <div><div class="t-label">User interact</div><div class="t-mono text-[14px] font-600" id="rp-user-int">—</div></div>
             <div><div class="t-label">Tile overlap</div><div class="t-mono text-[14px] font-600" id="rp-overlap">—</div></div>
             <div><div class="t-label">Monitoring</div><div class="t-mono text-[14px] font-600" id="rp-monitoring">—</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab: Why -->
-      <div class="tab-pane hidden" data-pane="why">
-        <div id="rp-issue-card" class="surface p-4 hidden">
-          <div class="t-label mb-1.5" style="color:var(--spike)">⚠ Issue detected</div>
-          <p id="rp-issue-text" class="text-[13px] leading-snug"></p>
-        </div>
-        <div id="rp-ok-card" class="surface p-4 hidden">
-          <div class="flex items-center gap-2">
-            <span style="color:var(--ok)">✓</span>
-            <span class="text-[13px] font-500">No issues detected — operating within efficient envelope.</span>
-          </div>
-        </div>
-        <div class="surface p-4 mt-3">
-          <div class="flex items-center justify-between mb-2">
-            <div class="t-label">Recommendation</div>
-            <span id="rp-action-badge"></span>
-          </div>
-          <p id="rp-reason" class="text-[13px] leading-snug mb-3">—</p>
-          <div class="t-label mb-1.5">Confidence</div>
-          <div class="meter"><div id="rp-conf-bar" style="width:0%;background:var(--zeiss)"></div></div>
-          <div class="flex justify-between mt-1">
-            <span class="t-faint text-[10.5px]" id="rp-confidence-text">—</span>
-            <span class="t-faint text-[10.5px]" id="rp-rule">—</span>
           </div>
         </div>
       </div>
@@ -631,7 +689,7 @@
       </div>
 
       <!-- Always-visible footer totals -->
-      <div class="surface p-4" style="background:var(--surface-2)">
+      <div id="cumulative-workflow-card" class="surface p-4 hidden" style="background:var(--surface-2)">
         <div class="t-label mb-3">Cumulative workflow</div>
         <div class="space-y-2.5 text-[12px]">
           <div class="flex items-center justify-between">
@@ -671,7 +729,7 @@
     <div class="space-y-2.5 text-[13px]">
       <div class="flex items-center justify-between"><span class="t-muted">Next / previous segment</span><span class="flex gap-1"><span class="kbd">↑</span><span class="kbd">↓</span></span></div>
       <div class="flex items-center justify-between"><span class="t-muted">Play / pause timeline</span><span class="kbd">Space</span></div>
-      <div class="flex items-center justify-between"><span class="t-muted">Inspector tabs</span><span class="flex gap-1"><span class="kbd">1</span><span class="kbd">2</span><span class="kbd">3</span></span></div>
+      <div class="flex items-center justify-between"><span class="t-muted">Inspector tabs</span><span class="flex gap-1"><span class="kbd">1</span><span class="kbd">2</span></span></div>
       <div class="flex items-center justify-between"><span class="t-muted">Filter: All / Issues / Spikes / OK</span><span class="flex gap-1"><span class="kbd">a</span><span class="kbd">i</span><span class="kbd">s</span><span class="kbd">o</span></span></div>
       <div class="flex items-center justify-between"><span class="t-muted">Toggle theme</span><span class="kbd">t</span></div>
       <div class="flex items-center justify-between"><span class="t-muted">Close dialog</span><span class="kbd">Esc</span></div>
@@ -831,6 +889,31 @@ function actionColor(action) {
   if (action === 'optimize_tile_scan_settings') return 'var(--warn)';
   return 'var(--ok)';
 }
+function actionTone(action) {
+  if (action === 'pause_live_view') {
+    return { color: 'var(--spike)', bg: 'rgba(244,63,94,.08)', border: 'rgba(244,63,94,.24)' };
+  }
+  if (action === 'optimize_tile_scan_settings') {
+    return { color: 'var(--warn)', bg: 'rgba(245,158,11,.08)', border: 'rgba(245,158,11,.26)' };
+  }
+  return { color: 'var(--ok)', bg: 'rgba(16,185,129,.08)', border: 'rgba(16,185,129,.24)' };
+}
+function nineRBadge(action) {
+  const map = {
+    pause_live_view:             { code: 'R2', name: 'Reduce', desc: 'Increase efficiency by reducing energy use' },
+    optimize_tile_scan_settings: { code: 'R2', name: 'Reduce', desc: 'Increase efficiency by reducing redundant scan area' },
+    no_action:                   null,
+  };
+  const r = map[action];
+  if (!r) return '<span class="text-[11px] t-faint">No R strategy — already operating efficiently</span>';
+  const tone = actionTone(action);
+  return `<div class="flex items-center gap-2 surface-2 px-2.5 py-1.5 rounded" style="border:1px solid ${tone.border}">
+    <span class="font-700 text-[13px]" style="color:${tone.color}">${r.code}</span>
+    <span class="text-[12px] font-600" style="color:${tone.color}">${r.name}</span>
+    <span class="text-[11px] t-muted">— ${r.desc}</span>
+  </div>`;
+}
+
 function actionBadge(action) {
   const m = {
     pause_live_view:             ['act-spike', '⏸ Pause Live View'],
@@ -902,7 +985,6 @@ function renderResults(data) {
   document.getElementById('verdict-sub').textContent = v.sub;
 
   // KPIs
-  const accPct = data.model_ready ? Math.round(data.model_accuracy * 100) : 0;
   const f1Pct  = data.model_ready ? Math.round(data.model_f1 * 100)       : 0;
   document.getElementById('kpi-total').textContent = data.total_energy_wh.toFixed(2) + ' Wh';
   document.getElementById('kpi-total-sub').textContent = `${data.total_segments} segments`;
@@ -911,7 +993,6 @@ function renderResults(data) {
   document.getElementById('kpi-issues').textContent = data.issues_count;
   document.getElementById('kpi-issues-sub').textContent = `${data.spike_count} spike${data.spike_count !== 1 ? 's' : ''}`;
   document.getElementById('kpi-f1').textContent = f1Pct + '%';
-  document.getElementById('kpi-f1-sub').textContent = `Accuracy ${accPct}%`;
 
   // Cumulative
   const totalWh = data.total_energy_wh || 1;
@@ -1182,8 +1263,16 @@ function activateSegment(idx) {
   } else {
     issue.classList.add('hidden'); ok.classList.remove('hidden');
   }
+  const reasonCard = document.getElementById('rp-reason-card');
+  const reasonLabel = document.getElementById('rp-reason-label');
+  const reasonText = document.getElementById('rp-reason');
+  const reasonTone = actionTone(s.recommended_action);
   document.getElementById('rp-action-badge').innerHTML = actionBadge(s.recommended_action);
-  document.getElementById('rp-reason').textContent = s.action_reason || '—';
+  document.getElementById('rp-9r-badge').innerHTML = nineRBadge(s.recommended_action);
+  reasonCard.style.background = reasonTone.bg;
+  reasonCard.style.border = `1px solid ${reasonTone.border}`;
+  reasonLabel.style.color = reasonTone.color;
+  reasonText.textContent = s.action_reason || '—';
   const conf = Math.round(s.confidence * 100);
   document.getElementById('rp-conf-bar').style.width = conf + '%';
   document.getElementById('rp-confidence-text').textContent = conf + '% confidence';
@@ -1261,27 +1350,13 @@ function setTab(name) {
     t.setAttribute('aria-selected', t.dataset.tab === name ? 'true' : 'false'));
   document.querySelectorAll('.tab-pane').forEach(p =>
     p.classList.toggle('hidden', p.dataset.pane !== name));
+
+  const cumulativeCard = document.getElementById('cumulative-workflow-card');
+  if (cumulativeCard) cumulativeCard.classList.toggle('hidden', name !== 'impact');
 }
 document.querySelectorAll('[role="tab"]').forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
 
-// ── Copy summary / download ───────────────────────────────────────────
-document.getElementById('copy-report-btn').addEventListener('click', async () => {
-  if (!_data) return;
-  const v = verdict(_data);
-  const lines = [
-    `ZEISS Energy Atlas — ${_data.scenario_name}`,
-    v.headline, v.sub, '',
-    `Total energy:    ${_data.total_energy_wh.toFixed(2)} Wh`,
-    `Saveable:        ${_data.total_savings_wh.toFixed(2)} Wh (${_data.savings_pct.toFixed(1)}%)`,
-    `Segments:        ${_data.total_segments}`,
-    `Issues:          ${_data.issues_count}`,
-    `Energy spikes:   ${_data.spike_count}`,
-    `Model accuracy:  ${Math.round((_data.model_accuracy || 0) * 100)}%`,
-    `Model F1:        ${Math.round((_data.model_f1 || 0) * 100)}%`,
-  ];
-  try { await navigator.clipboard.writeText(lines.join('\n')); toast('Summary copied to clipboard'); }
-  catch { toast('Clipboard unavailable'); }
-});
+// ── Download ──────────────────────────────────────────────────────────
 document.getElementById('download-btn').addEventListener('click', () => {
   if (!_data) return;
   const blob = new Blob([JSON.stringify(_data, null, 2)], { type: 'application/json' });
@@ -1339,8 +1414,7 @@ document.addEventListener('keydown', e => {
     case 'ArrowUp':   case 'k': stepSegment(-1); e.preventDefault(); break;
     case ' ':                   _playInterval ? stopPlay() : startPlay(); e.preventDefault(); break;
     case '1': setTab('metrics'); break;
-    case '2': setTab('why');     break;
-    case '3': setTab('impact');  break;
+    case '2': setTab('impact');  break;
     case 'a': setFilter('all');     break;
     case 'i': setFilter('issues');  break;
     case 's': setFilter('spikes');  break;
